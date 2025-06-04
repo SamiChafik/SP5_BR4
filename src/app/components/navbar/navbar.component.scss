@@ -1,0 +1,27 @@
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+
+  span {
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    flex-grow: 1;
+  }
+
+  .auth-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .active {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}

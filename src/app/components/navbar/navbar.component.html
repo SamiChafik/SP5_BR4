@@ -1,1 +1,31 @@
-<p>navbar works!</p>
+<mat-toolbar color="primary">
+  <span routerLink="/">Hello Events</span>
+
+  <div class="nav-links">
+    <a mat-button routerLink="/" routerLinkActive="active">Home</a>
+    <a mat-button routerLink="/about" routerLinkActive="active">About</a>
+    <a mat-button routerLink="/events" routerLinkActive="active">Events</a>
+
+    @if (authService.isAuthenticated()) {
+      <a mat-button routerLink="/reservations" routerLinkActive="active">My Reservations</a>
+      <a mat-button routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    }
+  </div>
+
+  <div class="auth-links">
+    @if (!authService.isAuthenticated()) {
+      <a mat-button routerLink="/register" routerLinkActive="active">Register</a>
+      <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
+    } @else {
+      <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </mat-menu>
+    }
+  </div>
+</mat-toolbar>
