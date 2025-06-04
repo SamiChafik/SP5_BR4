@@ -1,0 +1,36 @@
+.container {
+  padding: 20px;
+    background: none;
+
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+}
+
+.no-events {
+  margin-top: 20px;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-card-content {
+  flex-grow: 1;
+}
+
+mat-card-actions {
+  margin-top: auto;
+}
