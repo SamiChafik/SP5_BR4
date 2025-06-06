@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders  } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +8,9 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
   private tokenKey = 'auth_token';
+  private userKey = 'auth_user';
+
+  public userUpdated$ = new Subject<void>();
 
   constructor(private http: HttpClient) {}
 
@@ -15,8 +18,14 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/authenticate`, credentials).pipe(
       tap((response: any) => {
         if (response.token) {
-          this.setToken(response.token);
-          console.log(response.token);
+          this.setAuthData(response.token, {
+            id: response.id,
+            name: response.name,
+            email: response.email,
+            role: response.role
+          });
+
+          this.userUpdated$.next();
         }
       })
     );
@@ -26,26 +35,30 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
 
-  setToken(token: string): void {
+  private setAuthData(token: string, user: any): void {
     localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(this.userKey, JSON.stringify(user));
   }
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  removeToken(): void {
+  getUser(): any {
+    const userData = localStorage.getItem(this.userKey);
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  removeAuthData(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userKey);
+
+    this.userUpdated$.next();
+
   }
 
   isAuthenticated(): boolean {
     return !!this.getToken();
-  }
-
-  getAuthenticatedUser(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/user`, {
-      headers: this.getAuthHeaders()
-    });
   }
 
   getAuthHeaders(): HttpHeaders {
@@ -53,4 +66,5 @@ export class AuthService {
       'Authorization': `Bearer ${this.getToken()}`
     });
   }
+
 }
