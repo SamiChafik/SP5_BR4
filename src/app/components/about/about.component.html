@@ -1,1 +1,62 @@
-<p>about works!</p>
+<div class="about-container">
+  <mat-card class="about-card mat-elevation-z8">
+    <mat-card-header>
+      <mat-card-title>About Hello Events</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <section>
+        <h2 class="section-title">
+          <mat-icon>history</mat-icon>
+          Our Story
+        </h2>
+        <p>Founded in 2023, Hello Events was created to revolutionize how people discover and book local experiences. 
+          We connect event organizers with passionate attendees through our intuitive platform.</p>
+      </section>
+
+      <mat-divider></mat-divider>
+
+      <section>
+        <h2 class="section-title">
+          <mat-icon>groups</mat-icon>
+          Our Team
+        </h2>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListItemIcon>person</mat-icon>
+            <div matListItemTitle>Sami Chafik</div>
+            <div matListItemLine>Founder & CEO</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>person</mat-icon>
+            <div matListItemTitle>Jane Smith</div>
+            <div matListItemLine>Head of Operations</div>
+          </mat-list-item>
+        </mat-list>
+      </section>
+
+      <mat-divider></mat-divider>
+
+      <section>
+        <h2 class="section-title">
+          <mat-icon>contact_support</mat-icon>
+          Contact Us
+        </h2>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListItemIcon>email</mat-icon>
+            <div matListItemTitle>{{ email }}</div>    
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>phone</mat-icon>
+            <div matListItemTitle>(123) 456-7890</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>location_on</mat-icon>
+            <div matListItemTitle>123 Event Street</div>
+          </mat-list-item>
+        </mat-list>
+      </section>
+    </mat-card-content>
+  </mat-card>
+</div>
