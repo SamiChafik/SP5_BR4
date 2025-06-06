@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,14 +22,27 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  currentUser: any = null;
+
   constructor(
     public authService: AuthService,
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    this.currentUser = this.authService.getUser();
+    
+    if (this.authService.userUpdated$) {
+      this.authService.userUpdated$.subscribe(() => {
+        this.currentUser = this.authService.getUser();
+      });
+    }
+  }
+
   logout(): void {
-    this.authService.removeToken();
+    this.authService.removeAuthData();
+    this.currentUser = null;
     this.router.navigate(['/login']);
   }
 }

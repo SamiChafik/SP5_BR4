@@ -8,6 +8,7 @@
 
     @if (authService.isAuthenticated()) {
       <a mat-button routerLink="/reservations" routerLinkActive="active">My Reservations</a>
+      <a mat-button routerLink="/users" routerLinkActive="active">Users</a>
       <a mat-button routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
     }
   </div>
@@ -20,6 +21,7 @@
       <button mat-button [matMenuTriggerFor]="userMenu">
         <mat-icon>account_circle</mat-icon>
       </button>
+      <p> {{currentUser.name}} </p>
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
