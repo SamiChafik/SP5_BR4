@@ -7,6 +7,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EventService } from '../../services/events.service';
+import { BookingService } from '../../services/booking.service';
+import { AuthService } from '../../services/auth.service';
 
 type Event = {
   event_id: number;
@@ -36,7 +38,9 @@ export class EventsComponent implements OnInit {
 
   constructor(
     private eventsService: EventService,
-    private snackBar: MatSnackBar
+    private bookingService: BookingService,
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -59,8 +63,20 @@ export class EventsComponent implements OnInit {
   }
 
   onBook(event: Event): void {
-    this.snackBar.open(`Booking ${event.eventname}`, 'Close', { duration: 2000 });
+  if (!this.authService.isAuthenticated()) {
+    this.snackBar.open('Please login to book events', 'Close', { duration: 3000 });
+    return;
   }
+
+  this.bookingService.createBooking(event.event_id).subscribe({
+    next: () => {
+      this.snackBar.open(`Successfully booked ${event.eventname}`, 'Close', { duration: 3000 });
+    },
+    error: (err) => {
+      this.snackBar.open(err.message || 'Booking failed', 'Close', { duration: 3000 });
+    }
+  });
+}
 
   onEdit(event: Event): void {
     this.snackBar.open(`Editing ${event.eventname}`, 'Close', { duration: 2000 });
