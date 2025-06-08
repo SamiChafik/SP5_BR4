@@ -4,6 +4,12 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
+export interface Booking {
+  reservation_id: number;
+  user_id: number;
+  event_id: number;
+
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +32,17 @@ export class BookingService {
         console.error('Booking error:', error);
         return throwError(() => new Error(
           error.error?.message || 'Failed to complete booking'
+        ));
+      })
+    );
+  }
+
+  getAllBookings(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.apiUrl}/allReservations`).pipe(
+      catchError(error => {
+        console.error('Error loading bookings:', error);
+        return throwError(() => new Error(
+          error.error?.message || 'Failed to load bookings'
         ));
       })
     );
