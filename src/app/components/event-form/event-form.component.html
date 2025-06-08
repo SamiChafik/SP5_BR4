@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>
+  {{ isEditMode ? 'Edit Event' : 'Create New Event' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="eventForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Event Name</mat-label>
+      <input matInput formControlName="eventname" required>
+      <mat-error *ngIf="eventForm.get('eventname')?.hasError('required')">
+        Event name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" required rows="4"></textarea>
+      <mat-error *ngIf="eventForm.get('description')?.hasError('required')">
+        Description is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Event Type</mat-label>
+      <mat-select formControlName="type" required>
+        <mat-option *ngFor="let type of eventTypes" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="eventForm.get('type')?.hasError('required')">
+        Please select an event type
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSubmit()"
+    [disabled]="eventForm.invalid || loading"
+  >
+    {{ isEditMode ? 'Update' : 'Create' }}
+    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+  </button>
+</mat-dialog-actions>
