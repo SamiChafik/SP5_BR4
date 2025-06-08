@@ -1,5 +1,9 @@
 <div class="container">
-    
+
+    <!-- <button mat-raised-button color="primary" (click)="openCreateDialog()" style="margin-bottom: 20px;">
+        <mat-icon>add</mat-icon> Create Event
+    </button> -->
+
   @if (isLoading) {
     <div class="loading-spinner">
       <mat-spinner></mat-spinner>
@@ -30,15 +34,23 @@
           </mat-card-content>
           
           <mat-card-actions align="end">
-            <button mat-raised-button color="primary" (click)="onBook(event)">
-              <mat-icon>book_online</mat-icon> Book
-            </button>
-            <button mat-button color="accent" (click)="onEdit(event)">
-              <mat-icon>edit</mat-icon> Edit
-            </button>
+            @if (authService.isAuthenticated() && currentUser?.role === 'CLIENT') {
+              <button mat-raised-button color="primary" (click)="onBook(event)">
+                <mat-icon>book_online</mat-icon> Book
+              </button>
+            }
+
+            @if (authService.isAuthenticated() && currentUser?.role === 'ADMIN') {
+              <button mat-button color="accent" (click)="openEditDialog(event)">
+                  <mat-icon>edit</mat-icon> Edit
+              </button>
+            }
+
+            @if (authService.isAuthenticated() && currentUser?.role === 'ADMIN') {
             <button mat-button color="warn" (click)="onDelete(event)">
               <mat-icon>delete</mat-icon> Delete
             </button>
+            }
           </mat-card-actions>
         </mat-card>
       }
