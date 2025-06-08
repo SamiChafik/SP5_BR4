@@ -7,6 +7,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { EventFormComponent } from '../event-form/event-form.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-navbar',
@@ -27,7 +29,9 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
+  
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +43,18 @@ export class NavbarComponent implements OnInit {
       });
     }
   }
+
+  openCreateDialog(): void {
+      const dialogRef = this.dialog.open(EventFormComponent, {
+        width: '600px'
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.router.navigate(['/events'])
+        }
+      });
+    }
 
   logout(): void {
     this.authService.removeAuthData();

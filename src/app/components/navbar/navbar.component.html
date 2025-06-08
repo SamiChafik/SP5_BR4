@@ -6,11 +6,20 @@
     <a mat-button routerLink="/about" routerLinkActive="active">About</a>
     <a mat-button routerLink="/events" routerLinkActive="active">Events</a>
 
-    @if (authService.isAuthenticated()) {
-      <a mat-button routerLink="/reservations" routerLinkActive="active">My Reservations</a>
-      <a mat-button routerLink="/users" routerLinkActive="active">Users</a>
-      <a mat-button routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    }
+      @if (authService.isAuthenticated() && currentUser?.role === 'ADMIN') {
+        <a mat-button [matMenuTriggerFor]="dashboard">Dashboard</a>
+        <mat-menu #dashboard="matMenu" class="vertical-menu">
+          <button mat-menu-item routerLink="/users" routerLinkActive="active">
+            <span>Users</span>
+          </button>
+          <button mat-menu-item (click)="openCreateDialog()" routerLinkActive="active">
+            <span>Create Event</span>
+          </button>
+          <button mat-menu-item routerLink="/bookings" routerLinkActive="active">
+            <span>List of Reservations</span>
+          </button>
+        </mat-menu>
+      }
   </div>
 
   <div class="auth-links">
@@ -18,10 +27,10 @@
       <a mat-button routerLink="/register" routerLinkActive="active">Register</a>
       <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
     } @else {
+      <p> {{currentUser.name}} </p>
       <button mat-button [matMenuTriggerFor]="userMenu">
         <mat-icon>account_circle</mat-icon>
       </button>
-      <p> {{currentUser.name}} </p>
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
